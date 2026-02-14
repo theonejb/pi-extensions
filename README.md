@@ -52,6 +52,10 @@ Behavior:
 
 - Shows notification when a turn completes, e.g. `Took 1.2s`
 
+### Screenshot
+
+![Turn timer extension notification](./turn-timer-screenshot.png)
+
 ### Quick test
 
 1. Run `/reload`
