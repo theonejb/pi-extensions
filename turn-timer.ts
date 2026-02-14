@@ -13,11 +13,9 @@ function formatDuration(ms: number): string {
 }
 
 export default function (pi: ExtensionAPI) {
-	let lastDurationMs: number | undefined;
 	let activeTurnUserTimestamp: number | undefined;
 
 	function resetState() {
-		lastDurationMs = undefined;
 		activeTurnUserTimestamp = undefined;
 	}
 
@@ -40,26 +38,11 @@ export default function (pi: ExtensionAPI) {
 	});
 
 	pi.on("agent_end", async (_event, ctx) => {
-		if (activeTurnUserTimestamp !== undefined) {
-			lastDurationMs = Math.max(0, Date.now() - activeTurnUserTimestamp);
-		}
-
-		if (ctx.hasUI && lastDurationMs !== undefined) {
-			ctx.ui.notify(`Took ${formatDuration(lastDurationMs)}`, "info");
+		if (ctx.hasUI && activeTurnUserTimestamp !== undefined) {
+			const durationMs = Math.max(0, Date.now() - activeTurnUserTimestamp);
+			ctx.ui.notify(`Took ${formatDuration(durationMs)}`, "info");
 		}
 
 		activeTurnUserTimestamp = undefined;
-	});
-
-	pi.registerCommand("turn-time", {
-		description: "Show the latest measured turn time",
-		handler: async (_args, ctx) => {
-			if (lastDurationMs === undefined) {
-				ctx.ui.notify("No completed turns yet.", "info");
-				return;
-			}
-
-			ctx.ui.notify(`Last turn: ${formatDuration(lastDurationMs)}`, "info");
-		},
 	});
 }

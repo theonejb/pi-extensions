@@ -51,14 +51,12 @@ Measures turn duration from:
 Behavior:
 
 - Shows notification when a turn completes, e.g. `Took 1.2s`
-- Adds `/turn-time` command to show the last measured duration
 
 ### Quick test
 
 1. Run `/reload`
 2. Send any prompt
 3. Confirm you see a notification like `Took 842ms`
-4. Run `/turn-time`
 
 ## Uninstall
 
