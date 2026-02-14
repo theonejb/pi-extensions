@@ -1,31 +1,30 @@
-# Turn Timer (pi extension)
+# pi-extensions
 
 Source repo: https://github.com/theonejb/pi-extensions
 
-A small pi extension that measures how long a turn took:
+A collection of custom [pi](https://github.com/badlogic/pi-mono) extensions.
 
-- Start: timestamp of the **last user message**
-- End: when the agent emits `agent_end`
-- Output: notification like **`Took 1.2s`**
+As more extensions are added, this repo will hold them in one place.
 
-It also adds a command:
-
-- `/turn-time` → shows the most recent measured duration
-
-## Install
+## Install extensions
 
 ### Option 1: Global install (recommended)
 
-Clone the repo and copy the extension to pi's global extensions directory:
+Installs extensions for all projects.
 
 ```bash
 git clone https://github.com/theonejb/pi-extensions.git
 cd pi-extensions
 mkdir -p ~/.pi/agent/extensions
+
+# Copy one extension
 cp turn-timer.ts ~/.pi/agent/extensions/turn-timer.ts
+
+# (Optional) Copy all top-level .ts extensions
+# cp ./*.ts ~/.pi/agent/extensions/
 ```
 
-Then in pi, run:
+Then in pi:
 
 ```text
 /reload
@@ -33,26 +32,37 @@ Then in pi, run:
 
 ### Option 2: Project-local install
 
-From your project root:
+Installs extensions only for the current project.
 
 ```bash
 mkdir -p .pi/extensions
-cp /path/to/turn-timer.ts .pi/extensions/turn-timer.ts
+cp /path/to/pi-extensions/turn-timer.ts .pi/extensions/turn-timer.ts
 ```
 
 Then run `/reload` in pi.
 
-## Verify
+## Current extension: `turn-timer.ts`
 
-1. Send any prompt in pi.
-2. When the turn completes, you should see a notification like:
-   - `Took 842ms`
-   - `Took 3.4s`
-3. Run `/turn-time` to see the last measured value.
+Measures turn duration from:
+
+- **Start:** timestamp of the last user message
+- **End:** `agent_end`
+
+Behavior:
+
+- Shows notification when a turn completes, e.g. `Took 1.2s`
+- Adds `/turn-time` command to show the last measured duration
+
+### Quick test
+
+1. Run `/reload`
+2. Send any prompt
+3. Confirm you see a notification like `Took 842ms`
+4. Run `/turn-time`
 
 ## Uninstall
 
-Remove the file and reload:
+Remove the extension file and reload:
 
 ```bash
 rm ~/.pi/agent/extensions/turn-timer.ts
