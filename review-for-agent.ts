@@ -150,17 +150,18 @@ export default function (pi: ExtensionAPI) {
 	}
 
 	async function stopChildProcess(): Promise<void> {
-		if (!processHandle) return;
-		if (processHandle.exitCode !== null || processHandle.signalCode !== null) return;
+		const child = processHandle;
+		if (!child) return;
+		if (child.exitCode !== null || child.signalCode !== null) return;
 
 		shuttingDownChild = true;
 		try {
-			processHandle.kill("SIGTERM");
-			await waitForExit(processHandle, 1500);
+			child.kill("SIGTERM");
+			await waitForExit(child, 1500);
 
-			if (processHandle.exitCode === null && processHandle.signalCode === null) {
-				processHandle.kill("SIGKILL");
-				await waitForExit(processHandle, 500);
+			if (child.exitCode === null && child.signalCode === null) {
+				child.kill("SIGKILL");
+				await waitForExit(child, 500);
 			}
 		} finally {
 			shuttingDownChild = false;
